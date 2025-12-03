@@ -2,6 +2,8 @@
 
 API Node.js com TypeScript para aplicativo de crowdsensing de limpeza urbana.
 
+[Repositório](https://github.com/MariaEduardaFB/CleanCityNovo.git) do APP
+
 ## Características
 
 - Autenticação com JWT
