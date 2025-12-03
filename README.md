@@ -4,15 +4,15 @@ API Node.js com TypeScript para aplicativo de crowdsensing de limpeza urbana.
 
 ## Características
 
-- ✅ Autenticação com JWT
-- ✅ Banco de dados MySQL com Prisma ORM
-- ✅ Migrations automáticas
-- ✅ Sincronização em tempo real com WebSocket (Socket.io)
-- ✅ Compartilhamento de ocorrências entre usuários
-- ✅ Upload de fotos com armazenamento local
-- ✅ Dados ambientais (acelerômetro, temperatura, umidade, pressão)
-- ✅ Sistema de estatísticas
-- ✅ Busca geográfica (por coordenadas)
+- Autenticação com JWT
+- Banco de dados MySQL com Prisma ORM
+- Migrations automáticas
+- Sincronização em tempo real com WebSocket (Socket.io)
+- Compartilhamento de ocorrências entre usuários
+- Upload de fotos com armazenamento local
+- Dados ambientais (acelerômetro, temperatura, umidade, pressão)
+- Sistema de estatísticas
+- Busca geográfica (por coordenadas)
 
 ## Requisitos
 
