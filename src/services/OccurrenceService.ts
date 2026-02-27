@@ -8,24 +8,46 @@ export class OccurrenceService {
     userId: string,
     data: OccurrenceRequest
   ): Promise<Occurrence> {
-    const occurrence = await prisma.occurrence.create({
-      data: {
-        userId,
-        title: data.title,
-        description: data.description,
-        latitude: data.latitude,
-        longitude: data.longitude,
-        address: data.address,
-        accelerometerX: data.accelerometerX,
-        accelerometerY: data.accelerometerY,
-        accelerometerZ: data.accelerometerZ,
-        temperature: data.temperature,
-        humidity: data.humidity,
-        pressure: data.pressure,
-      },
-    });
+    try {
+      // Pega as fotos 
+      const photosArray = (data as any).photos || [];
 
-    return occurrence;
+      const occurrence = await prisma.occurrence.create({
+        data: {
+          userId,
+          title: data.title || "Sem título",
+          description: data.description || "",
+          latitude: Number(data.latitude),
+          longitude: Number(data.longitude),
+          address: data.address || null,
+          accelerometerX: data.accelerometerX || 0,
+          accelerometerY: data.accelerometerY || 0,
+          accelerometerZ: data.accelerometerZ || 0,
+          temperature: data.temperature || null,
+          humidity: data.humidity || null,
+          pressure: data.pressure || null,
+          status: 'PENDING',
+          // Salva a foto
+          photos: {
+            create: photosArray.map((photoStr: string, index: number) => ({
+              userId: userId,
+              fileName: `foto_${Date.now()}_${index}.jpg`,
+              filePath: photoStr,
+              fileSize: photoStr.length || 0,
+              mimeType: 'image/jpeg'
+            }))
+          }
+        },
+        include: {
+          photos: true
+        }
+      });
+
+      return occurrence;
+    } catch (error) {
+      console.error("🚨 Erro detalhado no Prisma:", error);
+      throw new Error('Erro ao salvar no banco de dados');
+    }
   }
 
   async getOccurrenceById(occurrenceId: string): Promise<Occurrence | null> {
@@ -136,7 +158,6 @@ export class OccurrenceService {
     userId: string,
     data: Partial<OccurrenceRequest>
   ): Promise<Occurrence> {
-    // Verify ownership
     const occurrence = await prisma.occurrence.findUnique({
       where: { id: occurrenceId },
     });
@@ -174,7 +195,6 @@ export class OccurrenceService {
   }
 
   async deleteOccurrence(occurrenceId: string, userId: string): Promise<void> {
-    // Verify ownership
     const occurrence = await prisma.occurrence.findUnique({
       where: { id: occurrenceId },
     });
